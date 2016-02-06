@@ -1,0 +1,86 @@
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Introdução ao jQuery</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body class="container">
+    <h1>Treinamentos</h1>
+    <button id="botao-atualiza">Atualiza</button>
+    <ul id="lista">
+        <li>Lógica de Programação</li>
+        <li>Dando os primeiros passos na web com HTML e CSS</li>
+        <li>Banco de dados e SQL</li>
+        <li>Ruby on Rails: do zero com deploy</li>
+        <li>NodeJS e Socket I/O</li>
+    </ul>
+    <label>Novo treinamento:</label>
+    <input id="treinamento">
+    <input id="botao-adiciona" type="button" value="adicionar"/>
+    <script src="js/jquery.js"></script>
+    <script>
+
+    	//Ajax = Requisição assincrona, mantém dados no navegador e atualiza (Novos dados sem perder os anteriores).
+
+
+
+    	//remove item
+		$('#lista').on('dblclick', 'li', function() {
+		      $(this).animate({'margin-left' : '+=100'}, function() {
+		          $(this).remove();
+		      });    
+		  });
+
+ 		//adiciona item
+    	$('#botao-adiciona').click(function(){
+
+    			var texto = $('#treinamento').val();
+
+    			$('<li>').text(texto).css({'color':'blue', 'background-color':'lightgrey'}).appendTo('#lista'); 
+    	});
+
+
+
+    	$('#botao-atualiza').click(function(){
+
+    			/*
+    			$.ajax({
+
+    				url : 'http://mirrorfashion.caelum.com.br/treinamentos',
+        			dataType: 'jsonp', //Possivel fazer a requisição para outra URL, dominio diferente
+        			success: function(retorno){
+
+        				$.each(retorno.treinamentos, function(){
+
+        						var treinamento = this;
+
+        						alert(treinamento.nome);
+
+        						$('<li>').css('color', 'green').text(treinamento.nome).appendTo('#lista')
+
+
+
+        				});
+        			}
+
+
+    			});
+
+    			*/
+
+    			$('#botao-atualiza').click(function() {
+					    $.get('http://mirrorfashion.caelum.com.br/treinamentos', function(retorno) {
+					        $.each(retorno.treinamentos, function() {
+					            var treinamento = this;
+					            $('<li>').css('color', 'green').text(treinamento.nome).appendTo('#lista');
+					        });
+					     } , 'jsonp');
+						});
+
+    			});
+
+
+    </script>
+</body>
+</html>
